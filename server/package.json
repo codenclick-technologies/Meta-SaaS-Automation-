@@ -1,0 +1,33 @@
+{
+  "name": "meta-lead-automation-server",
+  "version": "1.0.0",
+  "description": "Backend for Meta Lead Ads Automation",
+  "main": "server.js",
+  "scripts": {
+    "start": "npx kill-port 4000 && node server.js",
+    "dev": "npx kill-port 4000 && nodemon server.js"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "axios": "^1.6.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.0.0",
+    "mongoose": "^7.6.3",
+    "morgan": "^1.10.0",
+    "node-cron": "^3.0.0",
+    "nodemailer": "^6.9.7",
+    "socket.io": "^4.7.2",
+    "twilio": "^4.23.0",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
