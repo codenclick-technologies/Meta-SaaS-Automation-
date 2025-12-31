@@ -8,7 +8,6 @@ import {
     TrendingUp, AlertCircle, Menu
 } from 'lucide-react';
 import { format, subDays, startOfDay, endOfDay, startOfWeek, endOfWeek, subMonths } from 'date-fns';
-import UserManagement from '../components/UserManagement';
 import LeadChart from '../components/LeadChart';
 import StatusChart from '../components/StatusChart';
 import Sidebar from '../components/Sidebar';
@@ -107,8 +106,6 @@ export default function Dashboard() {
     });
     const [dateFilter, setDateFilter] = useState('All Time');
     const [customDateRange, setCustomDateRange] = useState({ from: '', to: '' });
-
-    const showTeamModal = location.pathname === '/users';
 
     // Get logged in user to check role
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -258,14 +255,6 @@ export default function Dashboard() {
                     </div>
                 </main>
             </div>
-
-            {/* Team Modal */}
-            <UserManagement
-                isOpen={showTeamModal}
-                onClose={() => navigate('/dashboard')}
-                onUserCreated={() => { }}
-            />
-
         </div>
     );
 }
