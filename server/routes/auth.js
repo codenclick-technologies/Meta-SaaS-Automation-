@@ -6,7 +6,15 @@ const crypto = require('crypto');
 const config = require('../config');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
+const Admin = require('../models/Admin');
 const { sendResetEmail } = require('../services/emailService');
+
+// Helper: Find user in either collection
+const findUserOrAdmin = async (id) => {
+    let user = await User.findById(id);
+    if (!user) user = await Admin.findById(id);
+    return user;
+};
 
 // Helper: Validate Password Complexity
 const validatePassword = (password) => {
@@ -25,7 +33,13 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        let user = await User.findOne({ email });
+        // Check Admin collection first
+        let user = await Admin.findOne({ email });
+
+        // If not found in Admin, check User collection
+        if (!user) {
+            user = await User.findOne({ email });
+        }
 
         if (!user) {
             return res.status(400).json({ message: 'Invalid Credentials' });

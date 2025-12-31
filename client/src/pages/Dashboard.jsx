@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 import { format, subDays, startOfDay, endOfDay, startOfWeek, endOfWeek, subMonths } from 'date-fns';
 import UserManagement from '../components/UserManagement';
-import SettingsModal from '../components/SettingsModal';
 import LeadChart from '../components/LeadChart';
 import StatusChart from '../components/StatusChart';
 import Sidebar from '../components/Sidebar';
@@ -110,7 +109,6 @@ export default function Dashboard() {
     const [customDateRange, setCustomDateRange] = useState({ from: '', to: '' });
 
     const showTeamModal = location.pathname === '/users';
-    const showSettingsModal = location.pathname === '/settings';
 
     // Get logged in user to check role
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -268,11 +266,6 @@ export default function Dashboard() {
                 onUserCreated={() => { }}
             />
 
-            {/* Settings Modal */}
-            <SettingsModal
-                isOpen={showSettingsModal}
-                onClose={() => navigate('/dashboard')}
-            />
         </div>
     );
 }

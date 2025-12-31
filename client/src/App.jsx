@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import LeadDetail from './pages/LeadDetail';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import SettingsPage from './pages/SettingsPage';
 import NotificationToast from './components/NotificationToast';
 
 const PrivateRoute = ({ children }) => {
@@ -48,7 +49,7 @@ export default function App() {
                 } />
                 <Route path="/settings" element={
                     <PrivateRoute>
-                        <Dashboard />
+                        <SettingsPage />
                     </PrivateRoute>
                 } />
             </Routes>
