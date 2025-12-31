@@ -51,7 +51,10 @@ const settingsSchema = new mongoose.Schema({
     includeBrochure: { type: Boolean, default: true },
     dripCampaignEnabled: { type: Boolean, default: false },
     whatsappTemplateName: { type: String, default: 'hello_world' },
-    verifyToken: { type: String, default: 'meta_automation_verify_token' }
+    verifyToken: { type: String, default: 'meta_automation_verify_token' },
+    leadRetentionDays: { type: Number, default: 90 },
+    aiScoringEnabled: { type: Boolean, default: false },
+    openaiApiKey: { type: String, default: '' }
 }, { timestamps: true });
 
 // Middleware: Encrypt sensitive fields before saving
@@ -59,6 +62,7 @@ settingsSchema.pre('save', function (next) {
     if (this.isModified('sendgridApiKey')) this.sendgridApiKey = encrypt(this.sendgridApiKey);
     if (this.isModified('metaAccessToken')) this.metaAccessToken = encrypt(this.metaAccessToken);
     if (this.isModified('twilioAuthToken')) this.twilioAuthToken = encrypt(this.twilioAuthToken);
+    if (this.isModified('openaiApiKey')) this.openaiApiKey = encrypt(this.openaiApiKey);
     next();
 });
 
@@ -67,6 +71,7 @@ settingsSchema.post('init', function (doc) {
     if (doc.sendgridApiKey) doc.sendgridApiKey = decrypt(doc.sendgridApiKey);
     if (doc.metaAccessToken) doc.metaAccessToken = decrypt(doc.metaAccessToken);
     if (doc.twilioAuthToken) doc.twilioAuthToken = decrypt(doc.twilioAuthToken);
+    if (doc.openaiApiKey) doc.openaiApiKey = decrypt(doc.openaiApiKey);
 });
 
 // Helper to always get the single settings document

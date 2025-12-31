@@ -20,6 +20,7 @@ const trackingRoutes = require('./routes/tracking');
 const smsRoutes = require('./routes/sms');
 const settingsRoutes = require('./routes/settings');
 const twilioWebhookRoutes = require('./routes/twilioWebhook');
+const analyticsRoutes = require('./routes/analytics');
 
 // Initialize App
 const app = express();
@@ -91,6 +92,7 @@ app.use('/leads', auth, leadRoutes);
 app.use('/sms', auth, smsRoutes);
 app.use('/settings', auth, settingsRoutes);
 app.use('/users', auth, require('./routes/users'));
+app.use('/analytics', auth, analyticsRoutes);
 
 // Serve Assets (Brochure)
 app.use('/assets', express.static(path.join(__dirname, '../assets')));
@@ -109,8 +111,51 @@ io.on('connection', (socket) => {
 });
 
 // Start Server
-server.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
+const PORT = config.port || 4000;
+const httpServer = server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
     // Initialize Cron Jobs
     require('./dripScheduler')();
+    require('./backupScheduler')();
+    require('./cleanupScheduler')();
+});
+
+// Helper for graceful shutdown with timeout
+const gracefulShutdown = (signal) => {
+    console.log(`${signal} received: closing HTTP server`);
+
+    // Force exit if graceful shutdown takes too long (e.g. 1000ms)
+    setTimeout(() => {
+        console.error('Could not close connections in time, forcefully shutting down');
+        if (signal === 'SIGUSR2') {
+            process.kill(process.pid, 'SIGUSR2');
+        } else {
+            process.exit(1);
+        }
+    }, 1000);
+
+    mongoose.connection.close(false, () => {
+        console.log('MongoDB connection closed');
+        httpServer.close(() => {
+            console.log('HTTP server closed');
+            if (signal === 'SIGUSR2') {
+                process.kill(process.pid, 'SIGUSR2');
+            } else {
+                process.exit(0);
+            }
+        });
+    });
+};
+
+// Handle graceful shutdown for Nodemon restarts
+process.once('SIGUSR2', function () {
+    gracefulShutdown('SIGUSR2');
+});
+
+process.on('SIGINT', function () {
+    gracefulShutdown('SIGINT');
+});
+
+process.on('SIGTERM', function () {
+    gracefulShutdown('SIGTERM');
 });

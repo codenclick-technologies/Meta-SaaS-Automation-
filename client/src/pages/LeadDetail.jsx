@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getLeadById, getLeadLogs, retryEmail, retryWhatsapp, updateLeadStatus, restoreLead, markSpam } from '../services/api'; import { ArrowLeft, RefreshCw, Mail, MessageSquare, ShieldCheck, AlertCircle, Ban } from 'lucide-react';
+import { getLeadById, getLeadLogs, retryEmail, retryWhatsapp, updateLeadStatus, restoreLead, markSpam } from '../services/api';
+import { ArrowLeft, RefreshCw, Mail, MessageSquare, ShieldCheck, AlertCircle, Ban, Clock, CheckCircle2, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { format } from 'date-fns';
+import { FullPageLoader } from '../components/LoadingSpinner';
+import AnimatedButton from '../components/AnimatedButton';
 
 export default function LeadDetail() {
     const { id } = useParams();
@@ -91,13 +94,17 @@ export default function LeadDetail() {
         return styles[status] || styles.pending;
     };
 
-    if (!lead) return <div className="p-10 text-center">Loading...</div>;
+    if (!lead) return <FullPageLoader />;
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 p-4 md:p-6 animate-fade-in">
             <div className="max-w-4xl mx-auto">
-                <button onClick={() => navigate('/')} className="flex items-center text-gray-600 hover:text-gray-900 mb-6 transition">
-                    <ArrowLeft className="w-5 h-5 mr-2" /> Back to Dashboard
+                <button
+                    onClick={() => navigate('/')}
+                    className="group flex items-center text-gray-600 hover:text-blue-600 mb-6 transition-all hover:translate-x-[-4px]"
+                >
+                    <ArrowLeft className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+                    <span className="font-medium">Back to Leads</span>
                 </button>
 
                 {lead.quality === 'Spam' && (
@@ -122,11 +129,16 @@ export default function LeadDetail() {
                     </div>
                 )}
 
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-                    <div className="p-4 md:p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900">{lead.name}</h1>
-                            <p className="text-gray-500 text-sm mt-1">Lead ID: {lead.fb_lead_id}</p>
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-6 card-hover animate-slide-in-up">
+                    <div className="p-6 md:p-8 border-b border-gray-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{lead.name}</h1>
+                                <p className="text-gray-500 text-sm flex items-center gap-2">
+                                    <span className="inline-block w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                                    Lead ID: {lead.fb_lead_id}
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div className="p-4 md:p-6 bg-gray-50 border-t border-gray-100 text-left md:text-right">
@@ -153,6 +165,37 @@ export default function LeadDetail() {
                         <p className="text-gray-500 text-sm">Created: {format(new Date(lead.createdAt), 'PPP p')}</p>
                     </div>
                 </div>
+
+                {/* Score Breakdown Section */}
+                {lead.scoreDetails && lead.scoreDetails.length > 0 && (
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-6 card-hover animate-slide-in-up" style={{ animationDelay: '100ms' }}>
+                        <div className="p-6 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-800">Lead Score Breakdown ({lead.score})</h2>
+                        </div>
+                        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {lead.scoreDetails.map((detail, index) => (
+                                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                    <div className="flex items-center gap-2">
+                                        {detail.points > 0 ? (
+                                            <TrendingUp className="w-4 h-4 text-green-500" />
+                                        ) : detail.points < 0 ? (
+                                            <TrendingDown className="w-4 h-4 text-red-500" />
+                                        ) : (
+                                            <Minus className="w-4 h-4 text-gray-400" />
+                                        )}
+                                        <span className="text-sm text-gray-600">{detail.reason}</span>
+                                    </div>
+                                    <span className={`font-bold text-sm ${detail.points > 0 ? 'text-green-600' :
+                                            detail.points < 0 ? 'text-red-600' :
+                                                'text-gray-500'
+                                        }`}>
+                                        {detail.points > 0 ? `+${detail.points}` : detail.points}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     {/* Contact Info */}
@@ -191,13 +234,15 @@ export default function LeadDetail() {
                                         </span>
                                     </div>
                                 </div>
-                                <button
+                                <AnimatedButton
                                     onClick={handleRetryEmail}
-                                    disabled={loading}
-                                    className="text-sm border border-gray-300 bg-white hover:bg-gray-50 px-3 py-1.5 rounded-md shadow-sm transition disabled:opacity-50"
+                                    loading={loading}
+                                    variant="secondary"
+                                    size="sm"
+                                    icon={RefreshCw}
                                 >
                                     Retry
-                                </button>
+                                </AnimatedButton>
                             </div>
 
                             {/* WhatsApp Action */}
@@ -213,13 +258,15 @@ export default function LeadDetail() {
                                         </span>
                                     </div>
                                 </div>
-                                <button
+                                <AnimatedButton
                                     onClick={handleRetryWhatsapp}
-                                    disabled={loading}
-                                    className="text-sm border border-gray-300 bg-white hover:bg-gray-50 px-3 py-1.5 rounded-md shadow-sm transition disabled:opacity-50"
+                                    loading={loading}
+                                    variant="secondary"
+                                    size="sm"
+                                    icon={RefreshCw}
                                 >
                                     Retry
-                                </button>
+                                </AnimatedButton>
                             </div>
 
                             {/* Mark as Spam Action (Only visible if NOT spam) */}
@@ -257,18 +304,45 @@ export default function LeadDetail() {
                             <div className="p-6 text-center text-gray-500">No logs available.</div>
                         ) : (
                             <div className="divide-y divide-gray-100">
-                                {logs.map(log => (
-                                    <div key={log._id} className="p-4 flex gap-4 items-start hover:bg-gray-50">
-                                        <div className={`mt-1 w-2 h-2 rounded-full ${log.status === 'sent' ? 'bg-green-500' : 'bg-red-500'}`} />
+                                {logs.map((log, index) => (
+                                    <div
+                                        key={log._id}
+                                        className="p-4 flex gap-4 items-start hover:bg-blue-50/50 transition-colors group relative"
+                                        style={{ animationDelay: `${index * 50}ms` }}
+                                    >
+                                        {/* Timeline connector */}
+                                        {index !== logs.length - 1 && (
+                                            <div className="absolute left-8 top-12 bottom-0 w-px bg-gray-200"></div>
+                                        )}
+
+                                        {/* Status icon */}
+                                        <div className={`relative z-10 mt-1 w-8 h-8 rounded-full flex items-center justify-center ${log.status === 'sent'
+                                            ? 'bg-green-100 text-green-600'
+                                            : 'bg-red-100 text-red-600'
+                                            }`}>
+                                            {log.status === 'sent' ? (
+                                                <CheckCircle2 className="w-4 h-4" />
+                                            ) : (
+                                                <AlertCircle className="w-4 h-4" />
+                                            )}
+                                        </div>
+
                                         <div className="flex-1">
-                                            <div className="flex justify-between">
-                                                <p className="font-medium text-gray-900 capitalize">{log.channel} - {log.status}</p>
-                                                <span className="text-xs text-gray-400">{format(new Date(log.timestamp), 'MMM dd, HH:mm:ss')}</span>
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <p className="font-semibold text-gray-900 capitalize">{log.channel}</p>
+                                                    <p className="text-sm text-gray-600 capitalize">{log.status}</p>
+                                                </div>
+                                                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                                                    <Clock className="w-3 h-3" />
+                                                    <span>{format(new Date(log.timestamp), 'MMM dd, HH:mm')}</span>
+                                                </div>
                                             </div>
                                             {log.response && log.response.error && (
-                                                <p className="text-xs text-red-500 mt-1 font-mono bg-red-50 p-2 rounded">
-                                                    Error: {log.response.error}
-                                                </p>
+                                                <div className="mt-2 text-xs text-red-600 bg-red-50 p-3 rounded-lg border border-red-100">
+                                                    <p className="font-semibold mb-1">Error Details:</p>
+                                                    <p className="font-mono text-red-700">{log.response.error}</p>
+                                                </div>
                                             )}
                                         </div>
                                     </div>

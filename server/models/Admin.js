@@ -7,11 +7,13 @@ const AdminSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['admin', 'sales'], default: 'admin' },
+    profilePicture: { type: String, default: '' },
+    lastActive: { type: Date, default: Date.now },
     loginAttempts: { type: Number, required: true, default: 0 },
     lockUntil: { type: Number },
     resetPasswordToken: String,
     resetPasswordExpire: Date
-});
+}, { timestamps: true });
 
 // Hash password before saving
 AdminSchema.pre('save', async function (next) {

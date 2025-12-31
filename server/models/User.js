@@ -5,8 +5,10 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['admin', 'sales'], default: 'sales' },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date
+    profilePicture: { type: String, default: '' },
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
+    lastActive: { type: Date, default: Date.now }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

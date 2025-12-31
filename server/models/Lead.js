@@ -9,7 +9,8 @@ const leadSchema = new mongoose.Schema({
     status: { type: String, default: 'New', enum: ['New', 'Contacted', 'Interested', 'Converted', 'Lost'] },
     score: { type: Number, default: 0 },
     quality: { type: String, default: 'Medium', enum: ['High', 'Medium', 'Low', 'Spam'] },
-    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
+    scoreDetails: [{ reason: String, points: Number }],
+    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     emailStatus: { type: String, default: 'pending' }, // pending, sent, failed, opened, clicked
     whatsappStatus: { type: String, default: 'pending' }, // pending, sent, failed, delivered, read
     smsStatus: { type: String, default: 'pending' }, // pending, sent, failed

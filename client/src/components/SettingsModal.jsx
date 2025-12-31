@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Key, Mail, MessageSquare, Eye, EyeOff, Info, Facebook, FileText, Link as LinkIcon, CheckCircle2, AlertCircle, Loader2, Zap, Palette, Upload, Lock } from 'lucide-react';
-import { getSettings, updateSettings, verifyEmailSettings, verifyWhatsappSettings } from '../services/api';
+import { X, Save, Key, Mail, MessageSquare, Eye, EyeOff, Info, Facebook, FileText, Link as LinkIcon, CheckCircle2, AlertCircle, Loader2, Zap, Palette, Upload, Lock, DatabaseZap, BrainCircuit } from 'lucide-react';
+import {
+    getSettings, updateSettings, verifyEmailSettings, verifyWhatsappSettings, verifyOpenAISettings
+} from '../services/api';
 
 export default function SettingsModal({ isOpen, onClose }) {
     const [loading, setLoading] = useState(false);
@@ -22,7 +24,10 @@ export default function SettingsModal({ isOpen, onClose }) {
         companyName: '',
         companyLogo: '',
         whatsappTemplateName: '',
-        verifyToken: ''
+        verifyToken: '',
+        leadRetentionDays: 90,
+        aiScoringEnabled: false,
+        openaiApiKey: ''
     });
 
     const [passwordData, setPasswordData] = useState({
@@ -34,10 +39,12 @@ export default function SettingsModal({ isOpen, onClose }) {
     const [showSendgridKey, setShowSendgridKey] = useState(false);
     const [showMetaToken, setShowMetaToken] = useState(false);
     const [showTwilioToken, setShowTwilioToken] = useState(false);
+    const [showOpenAIKey, setShowOpenAIKey] = useState(false);
     const [activeTab, setActiveTab] = useState('keys');
 
     const [emailStatus, setEmailStatus] = useState('idle'); // idle, loading, success, error
     const [whatsappStatus, setWhatsappStatus] = useState('idle');
+    const [aiStatus, setAiStatus] = useState('idle');
 
     useEffect(() => {
         if (isOpen) {
@@ -66,7 +73,10 @@ export default function SettingsModal({ isOpen, onClose }) {
                 companyName: data.companyName || 'Meta Automation',
                 companyLogo: data.companyLogo || '',
                 whatsappTemplateName: data.whatsappTemplateName || 'hello_world',
-                verifyToken: data.verifyToken || 'meta_automation_verify_token'
+                verifyToken: data.verifyToken || 'meta_automation_verify_token',
+                leadRetentionDays: data.leadRetentionDays || 90,
+                aiScoringEnabled: data.aiScoringEnabled || false,
+                openaiApiKey: data.openaiApiKey || ''
             });
         } catch (error) {
             console.error('Failed to load settings', error);
@@ -155,6 +165,18 @@ export default function SettingsModal({ isOpen, onClose }) {
             setWhatsappStatus('success');
         } catch (error) {
             setWhatsappStatus('error');
+            alert(`Verification Failed: ${error.response?.data?.error || 'Unknown Error'}`);
+        }
+    };
+
+    const handleVerifyAI = async () => {
+        if (!formData.openaiApiKey) return alert('Please enter API Key first');
+        setAiStatus('loading');
+        try {
+            await verifyOpenAISettings({ apiKey: formData.openaiApiKey });
+            setAiStatus('success');
+        } catch (error) {
+            setAiStatus('error');
             alert(`Verification Failed: ${error.response?.data?.error || 'Unknown Error'}`);
         }
     };
@@ -292,6 +314,77 @@ export default function SettingsModal({ isOpen, onClose }) {
                                         </p>
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* AI Scoring Settings */}
+                            <div className="mb-6">
+                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                    <BrainCircuit className="w-4 h-4" /> AI Lead Scoring (OpenAI)
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between bg-gray-50 p-4 rounded-lg border">
+                                        <label htmlFor="ai-toggle" className="font-medium text-gray-800">Enable AI-Powered Scoring</label>
+                                        <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                            <input
+                                                type="checkbox"
+                                                id="ai-toggle"
+                                                checked={formData.aiScoringEnabled}
+                                                onChange={e => setFormData({ ...formData, aiScoringEnabled: e.target.checked })}
+                                                className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+                                            />
+                                            <label htmlFor="ai-toggle" className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                        </div>
+                                    </div>
+
+                                    {formData.aiScoringEnabled && (
+                                        <div>
+                                            <div className="flex justify-between items-center mb-1">
+                                                <label className="block text-sm font-medium text-gray-700">OpenAI API Key</label>
+                                                {aiStatus === 'success' && <span className="text-xs text-green-600 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Verified</span>}
+                                                {aiStatus === 'error' && <span className="text-xs text-red-600 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Failed</span>}
+                                            </div>
+                                            <div className="relative">
+                                                <input
+                                                    type={showOpenAIKey ? "text" : "password"}
+                                                    value={formData.openaiApiKey}
+                                                    onChange={e => setFormData({ ...formData, openaiApiKey: e.target.value })}
+                                                    className={`w-full border rounded-lg px-4 py-2 pr-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${aiStatus === 'error' ? 'border-red-300 bg-red-50' : 'border-gray-300'}`}
+                                                    placeholder="sk-xxxxxxxx..."
+                                                />
+                                                <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleVerifyAI}
+                                                        disabled={aiStatus === 'loading'}
+                                                        className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded border border-gray-200 transition disabled:opacity-50"
+                                                    >
+                                                        {aiStatus === 'loading' ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Verify'}
+                                                    </button>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowOpenAIKey(!showOpenAIKey)}
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                >
+                                                    {showOpenAIKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                </button>
+                                            </div>
+                                            <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                                <Info className="w-3 h-3" />
+                                                Found in your OpenAI account settings.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Twilio Settings */}
+                            <div className="mb-6">
+                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                    <MessageSquare className="w-4 h-4" /> SMS Service (Twilio)
+                                </h3>
+                                <p className="text-xs text-gray-500 -mt-2 mb-4">Required for Drip Campaigns and manual SMS.</p>
+                                {/* ... Twilio settings fields ... */}
                             </div>
 
                             {/* WhatsApp Settings */}
@@ -675,6 +768,28 @@ export default function SettingsModal({ isOpen, onClose }) {
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required={activeTab === 'security'}
                                 />
+                            </div>
+
+                            <div className="border-t pt-6">
+                                <h3 className="font-bold text-orange-800 mb-2 flex items-center gap-2">
+                                    <DatabaseZap className="w-4 h-4" /> Data Retention Policy
+                                </h3>
+                                <p className="text-sm text-orange-700 mb-4">
+                                    Automatically delete old, non-converted leads to maintain database performance and comply with data policies.
+                                </p>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Delete leads older than</label>
+                                    <select
+                                        value={formData.leadRetentionDays}
+                                        onChange={e => setFormData({ ...formData, leadRetentionDays: Number(e.target.value) })}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                        <option value={30}>30 days</option>
+                                        <option value={90}>90 days (Recommended)</option>
+                                        <option value={180}>180 days</option>
+                                        <option value={365}>1 year</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     )}

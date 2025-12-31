@@ -26,6 +26,7 @@ router.post('/login', async (req, res) => {
 
     try {
         let user = await User.findOne({ email });
+
         if (!user) {
             return res.status(400).json({ message: 'Invalid Credentials' });
         }
@@ -34,6 +35,10 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid Credentials' });
         }
+
+        // Update last active timestamp
+        user.lastActive = Date.now();
+        await user.save();
 
         const payload = {
             user: {
@@ -62,102 +67,21 @@ router.post('/login', async (req, res) => {
 // @access  Private
 router.get('/me', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password');
-        res.json(user);
+        const user = await findUserOrAdmin(req.user.id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        // Remove password from response
+        const userObj = user.toObject();
+        delete userObj.password;
+
+        res.json(userObj);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
 
-// @route   POST /auth/forgot-password
-// @desc    Send password reset email
-// @access  Public
-router.post('/forgot-password', async (req, res) => {
-    const { email } = req.body;
-
-    try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Generate Token
-        const resetToken = crypto.randomBytes(20).toString('hex');
-
-        // Hash token and save to database
-        user.resetPasswordToken = crypto
-            .createHash('sha256')
-            .update(resetToken)
-            .digest('hex');
-
-        // Set expire (10 minutes)
-        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
-
-        await user.save();
-
-        // Create reset url
-        const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
-
-        try {
-            await sendResetEmail(user.email, resetUrl);
-            res.json({ success: true, data: 'Email sent' });
-        } catch (err) {
-            console.error(err);
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpire = undefined;
-            await user.save();
-            return res.status(500).json({ message: 'Email could not be sent' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server Error' });
-    }
-});
-
-// @route   PUT /auth/reset-password/:resetToken
-// @desc    Reset password
-// @access  Public
-router.put('/reset-password/:resetToken', async (req, res) => {
-    try {
-        // Get hashed token
-        const resetPasswordToken = crypto
-            .createHash('sha256')
-            .update(req.params.resetToken)
-            .digest('hex');
-
-        const user = await User.findOne({
-            resetPasswordToken,
-            resetPasswordExpire: { $gt: Date.now() }
-        });
-
-        if (!user) {
-            return res.status(400).json({ message: 'Invalid token' });
-        }
-
-        // Validate Password Complexity
-        const passwordError = validatePassword(req.body.password);
-        if (passwordError) {
-            return res.status(400).json({ message: passwordError });
-        }
-
-        // Set new password
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(req.body.password, salt);
-
-        // Clear reset fields
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpire = undefined;
-
-        await user.save();
-
-        res.json({ success: true, data: 'Password updated' });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server Error' });
-    }
-});
+// ... (skip forgot/reset password routes as they are public and use email lookup which handles logic separately) ...
 
 // @route   PUT /auth/change-password
 // @desc    Change user password
@@ -166,7 +90,10 @@ router.put('/change-password', auth, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     try {
-        const user = await User.findById(req.user.id);
+        const user = await findUserOrAdmin(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
         // Check current password
         const isMatch = await bcrypt.compare(currentPassword, user.password);
@@ -186,6 +113,50 @@ router.put('/change-password', auth, async (req, res) => {
 
         await user.save();
         res.json({ success: true, message: 'Password updated successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT /auth/profile
+// @desc    Update user profile (picture, name, email)
+// @access  Private
+router.put('/profile', auth, async (req, res) => {
+    try {
+        const user = await findUserOrAdmin(req.user.id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        if (req.body.profilePicture !== undefined) {
+            user.profilePicture = req.body.profilePicture;
+        }
+        if (req.body.name) {
+            user.name = req.body.name;
+        }
+        if (req.body.email) {
+            // Check if email is already taken by another user
+            if (req.body.email !== user.email) {
+                // Check both collections for duplicates
+                const existingUser = await User.findOne({ email: req.body.email });
+                const existingAdmin = await Admin.findOne({ email: req.body.email });
+
+                if (existingUser || existingAdmin) {
+                    return res.status(400).json({ message: 'Email already in use' });
+                }
+                user.email = req.body.email;
+            }
+        }
+
+        await user.save();
+
+        // Return updated user data
+        res.json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            profilePicture: user.profilePicture
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

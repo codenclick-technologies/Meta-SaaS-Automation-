@@ -33,4 +33,26 @@ router.put('/', async (req, res) => {
     }
 });
 
+// POST /settings/verify-openai
+router.post('/verify-openai', async (req, res) => {
+    const { apiKey } = req.body;
+    if (!apiKey) return res.status(400).json({ error: 'API Key is required' });
+
+    try {
+        const OpenAI = require('openai'); // Dynamic require to prevent crash if missing
+        const openai = new OpenAI({ apiKey });
+        
+        await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: "Test" }],
+            max_tokens: 1
+        });
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('OpenAI Verification Error:', error.message);
+        res.status(500).json({ error: error.message || 'Invalid API Key' });
+    }
+});
+
 module.exports = router;

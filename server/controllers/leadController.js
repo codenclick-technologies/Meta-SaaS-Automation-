@@ -21,8 +21,25 @@ exports.getLeads = async (req, res) => {
         // Filter by Date
         if (dateFrom || dateTo) {
             query.createdAt = {};
-            if (dateFrom) query.createdAt.$gte = new Date(dateFrom);
-            if (dateTo) query.createdAt.$lte = new Date(dateTo);
+
+            if (dateFrom && dateFrom !== 'undefined' && dateFrom !== 'null' && dateFrom !== 'Invalid Date') {
+                const start = new Date(dateFrom);
+                if (!isNaN(start.getTime())) {
+                    query.createdAt.$gte = start;
+                }
+            }
+
+            if (dateTo && dateTo !== 'undefined' && dateTo !== 'null' && dateTo !== 'Invalid Date') {
+                const end = new Date(dateTo);
+                if (!isNaN(end.getTime())) {
+                    query.createdAt.$lte = end;
+                }
+            }
+
+            // Clean up if no valid dates were added
+            if (Object.keys(query.createdAt).length === 0) {
+                delete query.createdAt;
+            }
         }
 
         // Filter by Status / Quality

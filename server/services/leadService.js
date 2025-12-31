@@ -6,6 +6,14 @@ const whatsappService = require('./whatsappService');
 const smsService = require('./smsService');
 const metaCapiService = require('./metaCapiService'); // Import CAPI
 
+// Optional dependency: OpenAI
+let OpenAI;
+try {
+    OpenAI = require("openai");
+} catch (error) {
+    console.warn("Optional dependency 'openai' not found. AI scoring will be disabled.");
+}
+
 exports.processNewLead = async (leadgenId, io) => {
     try {
         const settings = await Settings.getSettings();
@@ -48,60 +56,134 @@ exports.processNewLead = async (leadgenId, io) => {
         const phone = getField(['phone_number', 'phone', 'contact_number']) || '';
         let formattedPhone = phone; // Database me save karne ke liye clean version
 
-        // --- ADVANCED SCORING ALGORITHM (Professional & Robust) ---
-        let score = 0;
-
-        // 1. Name Validation & Scoring
-        if (name && name !== 'Unknown') {
-            score += 10; // Base score
-            const cleanName = name.trim();
-            // Check for full name (First Last)
-            if (cleanName.indexOf(' ') > 0) score += 5;
-            // Penalize numbers in name (likely fake)
-            if (/\d/.test(cleanName)) score -= 20;
-            // Penalize very short names
-            if (cleanName.length < 3) score -= 10;
-        }
-
-        // 2. Phone Validation & Scoring
-        if (phone) {
-            score += 20; // Base score
-
-            // FIX: Remove spaces, dashes, brackets. Keep only digits and '+'
-            formattedPhone = phone.replace(/[^\d+]/g, '');
-
-            const cleanPhone = phone.replace(/\D/g, '');
-            // Valid length check (10-15 digits for international standards)
-            if (cleanPhone.length >= 10 && cleanPhone.length <= 15) {
-                score += 10;
-            } else {
-                score -= 10; // Invalid length
+        // --- AI / ML SCORING LOGIC ---
+        const calculateAIScore = async (leadData, apiKey) => {
+            if (!OpenAI) {
+                console.error("OpenAI package is missing. Please run 'npm install openai'");
+                return 50;
             }
-            // Check for repeated digits (e.g., 9999999999) - likely fake
-            if (/^(\d)\1+$/.test(cleanPhone)) {
-                score -= 30;
+            try {
+                const openai = new OpenAI({ apiKey });
+                const prompt = `
+                    Analyze the following lead data and provide a quality score from 0 to 100.
+                    A high score (80-100) means it's a high-quality business lead.
+                    A low score (0-30) means it's likely spam or very low quality.
+                    Consider the name, email domain (corporate vs generic), and phone number validity.
+                    Lead Data:
+                    - Name: ${leadData.name}
+                    - Email: ${leadData.email}
+                    - Phone: ${leadData.phone}
+
+                    Respond with ONLY a single number representing the score. For example: 85
+                `;
+
+                const response = await openai.chat.completions.create({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 5,
+                    temperature: 0.2,
+                });
+
+                const scoreText = response.choices[0].message.content.trim();
+                const score = parseInt(scoreText, 10);
+
+                if (isNaN(score)) {
+                    console.warn('AI returned non-numeric score:', scoreText);
+                    return 50; // Fallback score
+                }
+                return score;
+            } catch (e) {
+                console.error('OpenAI API Error:', e.message);
+                return 50; // Fallback score on API error
             }
-        }
+        };
 
-        // 3. Email Analysis
-        if (email) {
-            score += 20; // Base score
+        // Current Advanced Heuristic Scoring (Simulating ML weights)
+        const calculateQualityScore = (name, email, phone) => {
+            let score = 0;
+            let details = [];
+            let weights = {
+                name: 10,
+                phone: 20,
+                email: 20,
+                corporateEmail: 35,
+                fullName: 5,
+                validPhoneLength: 10
+            };
 
-            const emailParts = email.split('@');
-            if (emailParts.length === 2) {
-                const domain = emailParts[1].toLowerCase();
-                const genericDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'rediffmail.com'];
-
-                if (genericDomains.includes(domain)) {
-                    score += 5; // Standard personal email
-                } else {
-                    score += 35; // High value for corporate/business emails
+            // 1. Name Analysis
+            if (name && name !== 'Unknown') {
+                score += weights.name;
+                details.push({ reason: 'Name Provided', points: weights.name });
+                const cleanName = name.trim();
+                if (cleanName.indexOf(' ') > 0) {
+                    score += weights.fullName;
+                    details.push({ reason: 'Full Name', points: weights.fullName });
+                }
+                if (/\d/.test(cleanName)) {
+                    score -= 20;
+                    details.push({ reason: 'Numbers in Name', points: -20 });
+                }
+                if (cleanName.length < 3) {
+                    score -= 10;
+                    details.push({ reason: 'Short Name', points: -10 });
                 }
             }
+
+            // 2. Phone Analysis
+            if (phone) {
+                score += weights.phone;
+                details.push({ reason: 'Phone Provided', points: weights.phone });
+                const cleanPhone = phone.replace(/\D/g, '');
+                if (cleanPhone.length >= 10 && cleanPhone.length <= 15) {
+                    score += weights.validPhoneLength;
+                    details.push({ reason: 'Valid Phone Length', points: weights.validPhoneLength });
+                } else {
+                    score -= 10;
+                    details.push({ reason: 'Invalid Phone Length', points: -10 });
+                }
+                if (/^(\d)\1+$/.test(cleanPhone)) {
+                    score -= 30;
+                    details.push({ reason: 'Repeated Digits in Phone', points: -30 });
+                }
+            }
+
+            // 3. Email Analysis
+            if (email) {
+                score += weights.email;
+                details.push({ reason: 'Email Provided', points: weights.email });
+                const emailParts = email.split('@');
+                if (emailParts.length === 2) {
+                    const domain = emailParts[1].toLowerCase();
+                    const genericDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'rediffmail.com'];
+                    if (genericDomains.includes(domain)) {
+                        score += 5;
+                        details.push({ reason: 'Generic Email Domain', points: 5 });
+                    } else {
+                        score += weights.corporateEmail; // B2B/Corporate email
+                        details.push({ reason: 'Corporate Email', points: weights.corporateEmail });
+                    }
+                }
+            }
+
+            return { totalScore: Math.min(Math.max(score, 0), 100), details };
+        };
+
+        // --- ADVANCED SCORING ALGORITHM (Professional & Robust) ---
+        let score, scoreDetails;
+        if (settings.aiScoringEnabled && settings.openaiApiKey) {
+            score = await calculateAIScore({ name, email, phone }, settings.openaiApiKey);
+            scoreDetails = [{ reason: 'AI Analysis', points: score }];
+        } else {
+            const result = calculateQualityScore(name, email, phone);
+            score = result.totalScore;
+            scoreDetails = result.details;
         }
 
-        // 4. Normalize Score (0-100)
-        score = Math.min(Math.max(score, 0), 100);
+        // Phone formatting for DB
+        if (phone) {
+            formattedPhone = phone.replace(/[^\d+]/g, '');
+        }
 
         // 5. Determine Quality Label
         let quality = 'Low';
@@ -117,6 +199,7 @@ exports.processNewLead = async (leadgenId, io) => {
             email,
             phone: formattedPhone, // Clean phone number save karein (Twilio ready)
             score,
+            scoreDetails,
             quality,
             status: 'New',
             emailStatus: 'pending',

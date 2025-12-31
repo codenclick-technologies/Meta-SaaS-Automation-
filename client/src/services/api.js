@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Create Axios Instance
-const api = axios.create({
+export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000', // Or use proxy /api
 });
 
@@ -74,8 +74,15 @@ export const updateLeadStatus = async (id, status) => {
     return data;
 };
 
+// Single Assign
 export const assignLead = async (id, assignedTo) => {
     const { data } = await api.put(`/leads/${id}/assign`, { assignedTo });
+    return data;
+};
+
+// Bulk Assign
+export const assignLeads = async (ids, assignedTo) => {
+    const { data } = await api.post('/leads/assign-batch', { ids, assignedTo });
     return data;
 };
 
@@ -99,8 +106,15 @@ export const deleteLeads = async (ids) => {
     return data;
 };
 
-export const getTeam = async () => {
-    const { data } = await api.get('/users/team');
+export const deleteLeadsByDate = async (dateFrom, dateTo) => {
+    const { data } = await api.delete('/leads/by-date', {
+        params: { dateFrom, dateTo }
+    });
+    return data;
+};
+
+export const getTeam = async (search = '') => {
+    const { data } = await api.get('/users/team', { params: { search } });
     return data;
 };
 
@@ -111,6 +125,11 @@ export const createUser = async (userData) => {
 
 export const deleteUser = async (id) => {
     const { data } = await api.delete(`/users/${id}`);
+    return data;
+};
+
+export const updateUser = async (id, userData) => {
+    const { data } = await api.put(`/users/${id}`, userData);
     return data;
 };
 
@@ -131,6 +150,11 @@ export const verifyEmailSettings = async (credentials) => {
 
 export const verifyWhatsappSettings = async (credentials) => {
     const { data } = await api.post('/settings/verify-whatsapp', credentials);
+    return data;
+};
+
+export const verifyOpenAISettings = async (credentials) => {
+    const { data } = await api.post('/settings/verify-openai', credentials);
     return data;
 };
 

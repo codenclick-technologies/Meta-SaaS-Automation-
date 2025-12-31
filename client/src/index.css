@@ -1,9 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import './design-system.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply antialiased;
+  }
+  
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gray-50 text-gray-900 font-['Inter',sans-serif];
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
   }
 }

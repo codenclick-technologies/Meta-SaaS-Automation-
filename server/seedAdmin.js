@@ -9,7 +9,7 @@ const seedAdmin = async () => {
         console.log('MongoDB Connected...');
 
         // Check if admin already exists
-        const email = 'admin@wkpc.com'; // Change this email
+        const email = 'admin@example.com'; // Change this email
         const password = 'admin123';    // Change this password
 
         const adminExists = await Admin.findOne({ email });
