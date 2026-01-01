@@ -1,0 +1,1378 @@
+{
+  "users": [
+    {
+      "_id": "695562b5ce10933fb2f910fa",
+      "name": "Super Admin",
+      "email": "admin@example.com",
+      "password": "$2a$10$Tn/Ck5SB0UZIibDMDpOyweDorx2vd5Rca.tIh00sQKB7HUHZd3sjS",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "role": "admin",
+      "profilePicture": "",
+      "lastActive": "2026-01-01T17:29:07.764Z",
+      "createdAt": "2025-12-31T17:51:49.873Z",
+      "updatedAt": "2026-01-01T17:29:07.764Z",
+      "__v": 1,
+      "twoFactorEnabled": false,
+      "authenticators": []
+    }
+  ],
+  "settings": [
+    {
+      "_id": "69555d99847735dfadafdbc2",
+      "sendgridApiKey": "",
+      "emailFrom": "",
+      "metaAccessToken": "",
+      "metaPhoneId": "",
+      "metaBusinessId": "",
+      "metaPixelId": "",
+      "twilioSid": "",
+      "twilioAuthToken": "",
+      "twilioPhone": "",
+      "companyName": "Meta Automation",
+      "companyLogo": "",
+      "emailSubject": "Welcome!",
+      "emailBody": "Hi {name},\n\nThank you for your interest.",
+      "brochureUrl": "",
+      "includeBrochure": true,
+      "dripCampaignEnabled": false,
+      "whatsappTemplateName": "hello_world",
+      "verifyToken": "meta_automation_verify_token",
+      "leadRetentionDays": 90,
+      "aiScoringEnabled": false,
+      "openaiApiKey": "",
+      "createdAt": "2025-12-31T17:30:01.063Z",
+      "updatedAt": "2025-12-31T17:30:01.063Z",
+      "__v": 0
+    }
+  ],
+  "leads": [
+    {
+      "_id": "6956ac8c7e2685ac2db6145c",
+      "fb_lead_id": "LEAD_56502",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Aditi Sharma",
+      "email": "aditi.sharma@corporate-tech.com",
+      "phone": "+919876543210",
+      "status": "New",
+      "score": 100,
+      "quality": "High",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac8c7e2685ac2db6145d"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac8c7e2685ac2db6145e"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac8c7e2685ac2db6145f"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac8c7e2685ac2db61460"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac8c7e2685ac2db61461"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac8c7e2685ac2db61462"
+        }
+      ],
+      "country": "IN",
+      "value": {
+        "amount": 0,
+        "currency": "INR"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_56502",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Aditi Sharma"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "aditi.sharma@corporate-tech.com"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+919876543210"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "Delhi"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:08.251Z",
+      "updatedAt": "2026-01-01T17:19:08.251Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8c7e2685ac2db6146c",
+      "fb_lead_id": "LEAD_29287",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "John Smith",
+      "email": "john.smith@gmail.com",
+      "phone": "+15550199888",
+      "status": "New",
+      "score": 65,
+      "quality": "Medium",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac8c7e2685ac2db6146d"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac8c7e2685ac2db6146e"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac8c7e2685ac2db6146f"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac8c7e2685ac2db61470"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac8c7e2685ac2db61471"
+        }
+      ],
+      "country": "US",
+      "value": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_29287",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "John Smith"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "john.smith@gmail.com"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+15550199888"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "New York"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:08.751Z",
+      "updatedAt": "2026-01-01T17:19:08.751Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8d7e2685ac2db6147b",
+      "fb_lead_id": "LEAD_32412",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Rahul Verma",
+      "email": "rahul.v@startup.io",
+      "phone": "+919988776655",
+      "status": "New",
+      "score": 100,
+      "quality": "High",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac8d7e2685ac2db6147c"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac8d7e2685ac2db6147d"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac8d7e2685ac2db6147e"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac8d7e2685ac2db6147f"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac8d7e2685ac2db61480"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac8d7e2685ac2db61481"
+        }
+      ],
+      "country": "IN",
+      "value": {
+        "amount": 0,
+        "currency": "INR"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_32412",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Rahul Verma"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "rahul.v@startup.io"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+919988776655"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "Mumbai"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:09.270Z",
+      "updatedAt": "2026-01-01T17:19:09.270Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8d7e2685ac2db6148b",
+      "fb_lead_id": "LEAD_48904",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Spam Bot",
+      "email": "bot1234@spam.net",
+      "phone": "+0000000000",
+      "status": "New",
+      "score": 70,
+      "quality": "Medium",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac8d7e2685ac2db6148c"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac8d7e2685ac2db6148d"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac8d7e2685ac2db6148e"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac8d7e2685ac2db6148f"
+        },
+        {
+          "reason": "Repeated Digits in Phone",
+          "points": -30,
+          "_id": "6956ac8d7e2685ac2db61490"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac8d7e2685ac2db61491"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac8d7e2685ac2db61492"
+        }
+      ],
+      "country": "US",
+      "value": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_48904",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Spam Bot"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "bot1234@spam.net"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+0000000000"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "Unknown"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:09.756Z",
+      "updatedAt": "2026-01-01T17:19:09.756Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8e7e2685ac2db6149c",
+      "fb_lead_id": "LEAD_13452",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Sarah Connor",
+      "email": "sarah@skynet.com",
+      "phone": "+442079460958",
+      "status": "New",
+      "score": 100,
+      "quality": "High",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac8e7e2685ac2db6149d"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac8e7e2685ac2db6149e"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac8e7e2685ac2db6149f"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac8e7e2685ac2db614a0"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac8e7e2685ac2db614a1"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac8e7e2685ac2db614a2"
+        }
+      ],
+      "country": "GB",
+      "value": {
+        "amount": 0,
+        "currency": "GBP"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_13452",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Sarah Connor"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "sarah@skynet.com"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+442079460958"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "London"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:10.275Z",
+      "updatedAt": "2026-01-01T17:19:10.275Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac967e2685ac2db614ac",
+      "fb_lead_id": "LEAD_97709",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Aditi Sharma",
+      "email": "aditi.sharma@corporate-tech.com",
+      "phone": "+919876543210",
+      "status": "New",
+      "score": 100,
+      "quality": "High",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac967e2685ac2db614ad"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac967e2685ac2db614ae"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac967e2685ac2db614af"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac967e2685ac2db614b0"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac967e2685ac2db614b1"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac967e2685ac2db614b2"
+        }
+      ],
+      "country": "IN",
+      "value": {
+        "amount": 0,
+        "currency": "INR"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_97709",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Aditi Sharma"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "aditi.sharma@corporate-tech.com"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+919876543210"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "Delhi"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:18.614Z",
+      "updatedAt": "2026-01-01T17:19:18.614Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac977e2685ac2db614bc",
+      "fb_lead_id": "LEAD_91179",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "John Smith",
+      "email": "john.smith@gmail.com",
+      "phone": "+15550199888",
+      "status": "New",
+      "score": 65,
+      "quality": "Medium",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac977e2685ac2db614bd"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac977e2685ac2db614be"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac977e2685ac2db614bf"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac977e2685ac2db614c0"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac977e2685ac2db614c1"
+        }
+      ],
+      "country": "US",
+      "value": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_91179",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "John Smith"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "john.smith@gmail.com"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+15550199888"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "New York"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:19.114Z",
+      "updatedAt": "2026-01-01T17:19:19.114Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac977e2685ac2db614cb",
+      "fb_lead_id": "LEAD_3548",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Rahul Verma",
+      "email": "rahul.v@startup.io",
+      "phone": "+919988776655",
+      "status": "New",
+      "score": 100,
+      "quality": "High",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac977e2685ac2db614cc"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac977e2685ac2db614cd"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac977e2685ac2db614ce"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac977e2685ac2db614cf"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac977e2685ac2db614d0"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac977e2685ac2db614d1"
+        }
+      ],
+      "country": "IN",
+      "value": {
+        "amount": 0,
+        "currency": "INR"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_3548",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Rahul Verma"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "rahul.v@startup.io"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+919988776655"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "Mumbai"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:19.633Z",
+      "updatedAt": "2026-01-01T17:19:19.633Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac987e2685ac2db614db",
+      "fb_lead_id": "LEAD_93642",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Spam Bot",
+      "email": "bot1234@spam.net",
+      "phone": "+0000000000",
+      "status": "New",
+      "score": 70,
+      "quality": "Medium",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac987e2685ac2db614dc"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac987e2685ac2db614dd"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac987e2685ac2db614de"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac987e2685ac2db614df"
+        },
+        {
+          "reason": "Repeated Digits in Phone",
+          "points": -30,
+          "_id": "6956ac987e2685ac2db614e0"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac987e2685ac2db614e1"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac987e2685ac2db614e2"
+        }
+      ],
+      "country": "US",
+      "value": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_93642",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Spam Bot"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "bot1234@spam.net"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+0000000000"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "Unknown"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:20.143Z",
+      "updatedAt": "2026-01-01T17:19:20.143Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac987e2685ac2db614ec",
+      "fb_lead_id": "LEAD_38161",
+      "form_id": "FORM_123456789",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "name": "Sarah Connor",
+      "email": "sarah@skynet.com",
+      "phone": "+442079460958",
+      "status": "New",
+      "score": 100,
+      "quality": "High",
+      "scoreDetails": [
+        {
+          "reason": "Name Provided",
+          "points": 10,
+          "_id": "6956ac987e2685ac2db614ed"
+        },
+        {
+          "reason": "Full Name",
+          "points": 5,
+          "_id": "6956ac987e2685ac2db614ee"
+        },
+        {
+          "reason": "Phone Provided",
+          "points": 20,
+          "_id": "6956ac987e2685ac2db614ef"
+        },
+        {
+          "reason": "Valid Phone Length",
+          "points": 10,
+          "_id": "6956ac987e2685ac2db614f0"
+        },
+        {
+          "reason": "Email Provided",
+          "points": 20,
+          "_id": "6956ac987e2685ac2db614f1"
+        },
+        {
+          "reason": "Corporate Email",
+          "points": 35,
+          "_id": "6956ac987e2685ac2db614f2"
+        }
+      ],
+      "country": "GB",
+      "value": {
+        "amount": 0,
+        "currency": "GBP"
+      },
+      "emailStatus": "pending",
+      "whatsappStatus": "pending",
+      "smsStatus": "pending",
+      "campaign": "Simulated Campaign",
+      "rawData": {
+        "id": "LEAD_38161",
+        "form_id": "FORM_123456789",
+        "field_data": [
+          {
+            "name": "full_name",
+            "values": [
+              "Sarah Connor"
+            ]
+          },
+          {
+            "name": "email",
+            "values": [
+              "sarah@skynet.com"
+            ]
+          },
+          {
+            "name": "phone_number",
+            "values": [
+              "+442079460958"
+            ]
+          },
+          {
+            "name": "city",
+            "values": [
+              "London"
+            ]
+          }
+        ],
+        "campaign_name": "Simulated Campaign"
+      },
+      "messages": [],
+      "logs": [],
+      "createdAt": "2026-01-01T17:19:20.657Z",
+      "updatedAt": "2026-01-01T17:19:20.657Z",
+      "__v": 0
+    }
+  ],
+  "organizations": [
+    {
+      "_id": "695562b5ce10933fb2f910f7",
+      "name": "Default Organization",
+      "users": [
+        "695562b5ce10933fb2f910fa"
+      ],
+      "facebookFormIds": [
+        "FORM_123456789"
+      ],
+      "createdAt": "2025-12-31T17:51:49.807Z",
+      "__v": 2,
+      "branding": {
+        "primaryColor": "#2563eb",
+        "whiteLabelEnabled": false
+      },
+      "compliance": {
+        "dataRetentionDays": 730,
+        "isCCPA": false,
+        "isGDPR": false,
+        "piiEncryption": true
+      },
+      "settings": {
+        "currency": "USD",
+        "locale": "en-US",
+        "region": "US",
+        "timezone": "UTC"
+      }
+    }
+  ],
+  "logs": [],
+  "auditlogs": [
+    {
+      "_id": "6956acc17e2685ac2db614fe",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "userId": "695562b5ce10933fb2f910fa",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "resourceId": null,
+      "status": "success",
+      "metadata": {
+        "userId": "695562b5ce10933fb2f910fa",
+        "organizationId": "695562b5ce10933fb2f910f7",
+        "riskScore": 10,
+        "method": "POST",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+      },
+      "ipAddress": "::1",
+      "location": {
+        "city": "",
+        "country": "US",
+        "ll": [
+          37.751,
+          -97.822
+        ]
+      },
+      "timestamp": "2026-01-01T17:20:01.552Z",
+      "createdAt": "2026-01-01T17:20:01.553Z",
+      "updatedAt": "2026-01-01T17:20:01.553Z",
+      "__v": 0
+    }
+  ],
+  "sessions": [
+    {
+      "_id": "6956acc17e2685ac2db614fb",
+      "userId": "695562b5ce10933fb2f910fa",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "token": "9cfe32931252b7e4dafab4f3dfa0428008bfbe801f21df3fa388f6fbe6c078c5",
+      "deviceInfo": {
+        "ip": "::1"
+      },
+      "expiresAt": "2026-01-31T17:20:01.478Z",
+      "isValid": true,
+      "lastActivity": "2026-01-01T17:29:07.735Z",
+      "createdAt": "2026-01-01T17:20:01.479Z",
+      "updatedAt": "2026-01-01T17:29:07.736Z",
+      "__v": 0
+    }
+  ],
+  "brandings": [
+    {
+      "_id": "6956af727e2685ac2db62512",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "companyName": "Meta-SaaS",
+      "primaryColor": "#121212",
+      "secondaryColor": "#0f172a",
+      "dnsVerified": false,
+      "mappingStatus": "pending",
+      "sslActive": false,
+      "whiteLabelActive": true,
+      "createdAt": "2026-01-01T17:31:39.649Z",
+      "updatedAt": "2026-01-01T17:31:39.649Z",
+      "__v": 0
+    }
+  ],
+  "integrations": [],
+  "workflows": [],
+  "workflowlogs": [],
+  "compliancelogs": [
+    {
+      "_id": "6956acf07e2685ac2db616cd",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "userId": "695562b5ce10933fb2f910fa",
+      "action": "PII_VIEW",
+      "category": "GDPR",
+      "targetId": "6956ac987e2685ac2db614ec",
+      "details": {
+        "message": "User viewed protected Lead contact information"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-01-01T17:20:48.118Z",
+      "createdAt": "2026-01-01T17:20:48.119Z",
+      "updatedAt": "2026-01-01T17:20:48.119Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956acf07e2685ac2db616db",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "userId": "695562b5ce10933fb2f910fa",
+      "action": "PII_VIEW",
+      "category": "GDPR",
+      "targetId": "6956ac987e2685ac2db614ec",
+      "details": {
+        "message": "User viewed protected Lead contact information"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-01-01T17:20:48.259Z",
+      "createdAt": "2026-01-01T17:20:48.259Z",
+      "updatedAt": "2026-01-01T17:20:48.259Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ad037e2685ac2db618a9",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "userId": "695562b5ce10933fb2f910fa",
+      "action": "PII_VIEW",
+      "category": "GDPR",
+      "targetId": "6956ac987e2685ac2db614ec",
+      "details": {
+        "message": "User viewed protected Lead contact information"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-01-01T17:21:07.611Z",
+      "createdAt": "2026-01-01T17:21:07.613Z",
+      "updatedAt": "2026-01-01T17:21:07.613Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ad037e2685ac2db618b7",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "userId": "695562b5ce10933fb2f910fa",
+      "action": "PII_VIEW",
+      "category": "GDPR",
+      "targetId": "6956ac987e2685ac2db614ec",
+      "details": {
+        "message": "User viewed protected Lead contact information"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-01-01T17:21:07.739Z",
+      "createdAt": "2026-01-01T17:21:07.740Z",
+      "updatedAt": "2026-01-01T17:21:07.740Z",
+      "__v": 0
+    }
+  ],
+  "analyticsevents": [
+    {
+      "_id": "6956ac8c7e2685ac2db61464",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8c7e2685ac2db6145c",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:08.300Z",
+      "createdAt": "2026-01-01T17:19:08.301Z",
+      "updatedAt": "2026-01-01T17:19:08.301Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8c7e2685ac2db61466",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8c7e2685ac2db6145c",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 100,
+        "sentiment": "High"
+      },
+      "timestamp": "2026-01-01T17:19:08.333Z",
+      "createdAt": "2026-01-01T17:19:08.334Z",
+      "updatedAt": "2026-01-01T17:19:08.334Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8c7e2685ac2db61473",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8c7e2685ac2db6146c",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:08.781Z",
+      "createdAt": "2026-01-01T17:19:08.782Z",
+      "updatedAt": "2026-01-01T17:19:08.782Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8c7e2685ac2db61475",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8c7e2685ac2db6146c",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 65,
+        "sentiment": "Medium"
+      },
+      "timestamp": "2026-01-01T17:19:08.809Z",
+      "createdAt": "2026-01-01T17:19:08.809Z",
+      "updatedAt": "2026-01-01T17:19:08.809Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8d7e2685ac2db61483",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8d7e2685ac2db6147b",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:09.309Z",
+      "createdAt": "2026-01-01T17:19:09.309Z",
+      "updatedAt": "2026-01-01T17:19:09.309Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8d7e2685ac2db61485",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8d7e2685ac2db6147b",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 100,
+        "sentiment": "High"
+      },
+      "timestamp": "2026-01-01T17:19:09.340Z",
+      "createdAt": "2026-01-01T17:19:09.341Z",
+      "updatedAt": "2026-01-01T17:19:09.341Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8d7e2685ac2db61494",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8d7e2685ac2db6148b",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:09.788Z",
+      "createdAt": "2026-01-01T17:19:09.788Z",
+      "updatedAt": "2026-01-01T17:19:09.788Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8d7e2685ac2db61496",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8d7e2685ac2db6148b",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 70,
+        "sentiment": "Medium"
+      },
+      "timestamp": "2026-01-01T17:19:09.815Z",
+      "createdAt": "2026-01-01T17:19:09.815Z",
+      "updatedAt": "2026-01-01T17:19:09.815Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8e7e2685ac2db614a4",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8e7e2685ac2db6149c",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:10.306Z",
+      "createdAt": "2026-01-01T17:19:10.306Z",
+      "updatedAt": "2026-01-01T17:19:10.306Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac8e7e2685ac2db614a6",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac8e7e2685ac2db6149c",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 100,
+        "sentiment": "High"
+      },
+      "timestamp": "2026-01-01T17:19:10.335Z",
+      "createdAt": "2026-01-01T17:19:10.335Z",
+      "updatedAt": "2026-01-01T17:19:10.335Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac967e2685ac2db614b4",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac967e2685ac2db614ac",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:18.669Z",
+      "createdAt": "2026-01-01T17:19:18.669Z",
+      "updatedAt": "2026-01-01T17:19:18.669Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac967e2685ac2db614b6",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac967e2685ac2db614ac",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 100,
+        "sentiment": "High"
+      },
+      "timestamp": "2026-01-01T17:19:18.698Z",
+      "createdAt": "2026-01-01T17:19:18.699Z",
+      "updatedAt": "2026-01-01T17:19:18.699Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac977e2685ac2db614c3",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac977e2685ac2db614bc",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:19.147Z",
+      "createdAt": "2026-01-01T17:19:19.147Z",
+      "updatedAt": "2026-01-01T17:19:19.147Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac977e2685ac2db614c5",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac977e2685ac2db614bc",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 65,
+        "sentiment": "Medium"
+      },
+      "timestamp": "2026-01-01T17:19:19.175Z",
+      "createdAt": "2026-01-01T17:19:19.176Z",
+      "updatedAt": "2026-01-01T17:19:19.176Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac977e2685ac2db614d3",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac977e2685ac2db614cb",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:19.662Z",
+      "createdAt": "2026-01-01T17:19:19.663Z",
+      "updatedAt": "2026-01-01T17:19:19.663Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac977e2685ac2db614d5",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac977e2685ac2db614cb",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 100,
+        "sentiment": "High"
+      },
+      "timestamp": "2026-01-01T17:19:19.689Z",
+      "createdAt": "2026-01-01T17:19:19.689Z",
+      "updatedAt": "2026-01-01T17:19:19.689Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac987e2685ac2db614e4",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac987e2685ac2db614db",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:20.172Z",
+      "createdAt": "2026-01-01T17:19:20.173Z",
+      "updatedAt": "2026-01-01T17:19:20.173Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac987e2685ac2db614e6",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac987e2685ac2db614db",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 70,
+        "sentiment": "Medium"
+      },
+      "timestamp": "2026-01-01T17:19:20.201Z",
+      "createdAt": "2026-01-01T17:19:20.201Z",
+      "updatedAt": "2026-01-01T17:19:20.201Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac987e2685ac2db614f4",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac987e2685ac2db614ec",
+      "type": "LEAD_INGESTED",
+      "source": "facebook",
+      "campaign": "Simulated Campaign",
+      "value": 0,
+      "timestamp": "2026-01-01T17:19:20.703Z",
+      "createdAt": "2026-01-01T17:19:20.704Z",
+      "updatedAt": "2026-01-01T17:19:20.704Z",
+      "__v": 0
+    },
+    {
+      "_id": "6956ac987e2685ac2db614f6",
+      "organizationId": "695562b5ce10933fb2f910f7",
+      "leadId": "6956ac987e2685ac2db614ec",
+      "type": "AI_ANALYZED",
+      "metadata": {
+        "score": 100,
+        "sentiment": "High"
+      },
+      "timestamp": "2026-01-01T17:19:20.732Z",
+      "createdAt": "2026-01-01T17:19:20.733Z",
+      "updatedAt": "2026-01-01T17:19:20.733Z",
+      "__v": 0
+    }
+  ],
+  "apikeys": [],
+  "roles": []
+}

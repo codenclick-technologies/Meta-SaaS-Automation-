@@ -1,0 +1,12 @@
+{
+    "ignore": [
+        "*.test.js",
+        "fixtures/*",
+        "logs/*",
+        "*.log"
+    ],
+    "delay": "2500",
+    "events": {
+        "restart": "npx kill-port 4000"
+    }
+}
