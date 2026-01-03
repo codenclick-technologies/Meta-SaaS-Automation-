@@ -1,0 +1,104 @@
+================================================================================
+URGENT REQUIRED KEYS & APIS for WKPC Meta Automation
+================================================================================
+
+This file lists every single "Key" and "API" you need to make the project work 100%.
+Follow the links and steps to get each one.
+
+--------------------------------------------------------------------------------
+1. MONGODB (DATABASE) => REQUIRED
+--------------------------------------------------------------------------------
+*   **Purpose**: Stores all your leads, admin users, and logs.
+*   **How to get it**:
+    1.  Go to: https://www.mongodb.com/cloud/atlas/register
+    2.  Create a **FREE Cluster**.
+    3.  Go to **Security** -> **Database Access**: Create a user (User: `admin`, Pass: `password123` - remember this!).
+    4.  Go to **Security** -> **Network Access**: Click "Add IP Address" -> Select "Allow Access From Anywhere (0.0.0.0/0)".
+    5.  Go to **Database** -> **Connect** -> **Drivers**.
+    6.  **Copy the Connection String**.
+    7.  Replace `<password>` with your actual password.
+
+*   **Where to paste**: `.env` file -> `MONGO_URI`
+
+--------------------------------------------------------------------------------
+2. SENDGRID (EMAIL SERVICE) => REQUIRED
+--------------------------------------------------------------------------------
+*   **Purpose**: Sends "Welcome Emails" and "Password Reset" Links securely.
+*   **How to get it**:
+    1.  Go to: https://signup.sendgrid.com/ (Free plan allows 100 emails/day).
+    2.  Verify your email address.
+    3.  Go to **Settings** -> **API Keys** -> **Create API Key**.
+    4.  Name it "Meta Project" -> Select **Full Access** -> Create.
+    5.  **COPY THE KEY IMMEDIATELY** (It starts with `SG...`). You won't see it again.
+
+*   **Where to paste**: `.env` file -> `SENDGRID_API_KEY`
+
+    **OR ... OPTION B: GMAIL (EASIER & FREE)**
+    If SendGrid is too hard, use your Gmail account:
+    1.  Go to **Google Account Settings** -> **Security**.
+    2.  Enable **2-Step Verification** (if not already on).
+    3.  Search for **"App Passwords"** in the top search bar.
+    4.  Create a new name: "Meta App".
+    5.  Copy the 16-character password (e.g., `abcd efgh ijkl mnop`).
+    6.  **In your `.env` file**:
+        - `SMTP_HOST=smtp.gmail.com`
+        - `SMTP_PORT=587`
+        - `SMTP_USER=your_email@gmail.com`
+        - `SMTP_PASS=abcd efgh ijkl mnop` (Remove spaces if needed, usually fine)
+        - Leave `SENDGRID_API_KEY` empty.
+
+--------------------------------------------------------------------------------
+3. META / FACEBOOK (LEAD ADS) => REQUIRED
+--------------------------------------------------------------------------------
+*   **Purpose**: To receive leads instantly when someone fills your Facebook Form.
+*   **How to get it**:
+    1.  Go to: https://developers.facebook.com/
+    2.  **My Apps** -> **Create App** -> Select **"Business"**.
+    3.  In your App Dashboard, find **"Webhooks"** and click **Set Up**.
+    4.  **To Get Page Access Token**:
+        - Go to **Tools** -> **Graph API Explorer**.
+        - Select your Facebook Page in the dropdown.
+        - Add Permissions: `leads_retrieval`, `pages_manage_ads`, `pages_read_engagement`.
+        - Click **Generate Access Token**.
+        - Copy this token.
+
+*   **Where to paste**: `.env` file -> `PAGE_ACCESS_TOKEN`
+
+--------------------------------------------------------------------------------
+4. WHATSAPP CLOUD API (MESSAGES) => REQUIRED
+--------------------------------------------------------------------------------
+*   **Purpose**: Sends automatic WhatsApp messages to new leads.
+*   **How to get it**:
+    1.  In the same Facebook App (developers.facebook.com), look for **"WhatsApp"** in the sidebar.
+    2.  Click **API Setup**.
+    3.  **Phone Number ID**: Copy the ID shown under "Sending Phone Number".
+    4.  **Access Token**: Copy the "Temporary Access Token" (For permanent, you need to set up a System User in Business Settings).
+
+*   **Where to paste**: `.env` file -> `WHATSAPP_PHONE_ID` and `WHATSAPP_ACCESS_TOKEN`
+
+--------------------------------------------------------------------------------
+5. GOOGLE CLIENT ID (LOGIN) => OPTIONAL (For "Sign in with Google")
+--------------------------------------------------------------------------------
+*   **Purpose**: Allows you to login using your Google Account.
+*   **How to get it**:
+    1.  Go to: https://console.cloud.google.com/
+    2.  Create a **New Project**.
+    3.  Go to **APIs & Services** -> **Credentials**.
+    4.  Click **Create Credentials** -> **OAuth Client ID** -> **Web Application**.
+    5.  **Authorized Origins**: Add `http://localhost:5173`
+    6.  **Authorized Redirect URIs**: Add `http://localhost:5173`
+    7.  Click Create and **Copy the Client ID**.
+
+*   **Where to paste**: `.env` file (Client folder) -> `VITE_GOOGLE_CLIENT_ID`
+
+================================================================================
+SUMMARY: WHERE TO PASTE EVERYTHING
+================================================================================
+Open `project/server/.env` and fill these:
+- MONGO_URI=...
+- SENDGRID_API_KEY=...
+- PAGE_ACCESS_TOKEN=...
+- WHATSAPP_ACCESS_TOKEN=...
+
+Open `project/client/.env` and fill this:
+- VITE_GOOGLE_CLIENT_ID=...
