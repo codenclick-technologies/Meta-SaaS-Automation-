@@ -12,6 +12,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const auth = require('./middleware/auth'); // Import Security Middleware
 const domainValidator = require('./middleware/domainValidator'); // Domain Validation Middleware
+const { connectDB } = require('./db'); // Import optimized database connection
 
 // Import Routes
 const webhookRoutes = require('./routes/webhook');
@@ -88,14 +89,8 @@ const webhookLimiter = rateLimit({
 app.use('/webhook', webhookLimiter);
 app.use('/webhooks/twilio', webhookLimiter);
 
-// Database Connection
-mongoose.connect(config.mongoUri)
-    .then(() => console.log('MongoDB Connected Successfully'))
-    .catch(err => {
-        console.error('MongoDB Connection FAILED:', err.message);
-        console.error('Please check your IP Whitelist in MongoDB Atlas!');
-        process.exit(1);
-    });
+// Database connection will be established by the API entry point (api/index.js)
+// This allows for better connection pooling in serverless environments
 
 // Make io available in routes via request object
 app.use((req, res, next) => {
@@ -143,61 +138,68 @@ io.on('connection', (socket) => {
     });
 });
 
+
 // Start Server
 const PORT = config.port || 4000;
-const httpServer = server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    // Initialize Cron Jobs
-    require('./dripScheduler')();
-    require('./cleanupScheduler')();
 
+// Only start the server if not in Vercel serverless environment
+if (process.env.VERCEL !== '1') {
+    const httpServer = server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+        // Initialize Cron Jobs
+        require('./dripScheduler')();
+        require('./cleanupScheduler')();
 
-    // Initialize Disaster Recovery System (Automated Backups)
-    backupService.startAutoBackup();
+        // Initialize Disaster Recovery System (Automated Backups)
+        backupService.startAutoBackup();
 
-    // Schedule Hourly Campaign Sync
-    cron.schedule('0 * * * *', () => {
-        console.log('Running hourly campaign sync...');
-        facebookService.syncAllCampaigns();
+        // Schedule Hourly Campaign Sync
+        cron.schedule('0 * * * *', () => {
+            console.log('Running hourly campaign sync...');
+            facebookService.syncAllCampaigns();
+        });
     });
-});
 
-// Helper for graceful shutdown with timeout
-const gracefulShutdown = (signal) => {
-    console.log(`${signal} received: closing HTTP server`);
+    // Helper for graceful shutdown with timeout
+    const gracefulShutdown = (signal) => {
+        console.log(`${signal} received: closing HTTP server`);
 
-    // Force exit if graceful shutdown takes too long (e.g. 1000ms)
-    setTimeout(() => {
-        console.error('Could not close connections in time, forcefully shutting down');
-        if (signal === 'SIGUSR2') {
-            process.kill(process.pid, 'SIGUSR2');
-        } else {
-            process.exit(1);
-        }
-    }, 1000);
-
-    mongoose.connection.close(false, () => {
-        console.log('MongoDB connection closed');
-        httpServer.close(() => {
-            console.log('HTTP server closed');
+        // Force exit if graceful shutdown takes too long (e.g. 1000ms)
+        setTimeout(() => {
+            console.error('Could not close connections in time, forcefully shutting down');
             if (signal === 'SIGUSR2') {
                 process.kill(process.pid, 'SIGUSR2');
             } else {
-                process.exit(0);
+                process.exit(1);
             }
+        }, 1000);
+
+        mongoose.connection.close(false, () => {
+            console.log('MongoDB connection closed');
+            httpServer.close(() => {
+                console.log('HTTP server closed');
+                if (signal === 'SIGUSR2') {
+                    process.kill(process.pid, 'SIGUSR2');
+                } else {
+                    process.exit(0);
+                }
+            });
         });
+    };
+
+    // Handle graceful shutdown for Nodemon restarts
+    process.once('SIGUSR2', function () {
+        gracefulShutdown('SIGUSR2');
     });
-};
 
-// Handle graceful shutdown for Nodemon restarts
-process.once('SIGUSR2', function () {
-    gracefulShutdown('SIGUSR2');
-});
+    process.on('SIGINT', function () {
+        gracefulShutdown('SIGINT');
+    });
 
-process.on('SIGINT', function () {
-    gracefulShutdown('SIGINT');
-});
+    process.on('SIGTERM', function () {
+        gracefulShutdown('SIGTERM');
+    });
+}
 
-process.on('SIGTERM', function () {
-    gracefulShutdown('SIGTERM');
-});
+// Export app for Vercel serverless deployment
+module.exports = app;
